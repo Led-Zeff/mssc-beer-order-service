@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-@Service
 @Slf4j
+@Service
 public class TastingRoomService {
 
     private final CustomerRepository customerRepository;
@@ -71,6 +71,8 @@ public class TastingRoomService {
     }
 
     private String getRandomBeerUpc() {
-        return beerUpcs.get(new Random().nextInt(beerUpcs.size() -0));
+        String upc = beerUpcs.get(new Random().nextInt(beerUpcs.size()));
+        log.info("Random UPC: {}", upc);
+        return upc;
     }
 }

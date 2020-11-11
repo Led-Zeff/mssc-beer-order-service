@@ -10,9 +10,11 @@ import org.springframework.web.client.RestTemplate;
 
 import guru.sfg.beer.order.service.web.model.BeerDto;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
-@ConfigurationProperties(prefix = "sfg.brewery", ignoreUnknownFields = false)
+@Slf4j
 @Service
+@ConfigurationProperties(prefix = "sfg.brewery", ignoreUnknownFields = false)
 public class BeerServiceImpl implements BeerService {
   
   private final RestTemplate restTemplate;
@@ -30,12 +32,13 @@ public class BeerServiceImpl implements BeerService {
 
   @Override
   public Optional<BeerDto> getBeerById(UUID id) {
-    return Optional.of(restTemplate.getForObject(beerServiceHost + beerPathV1, BeerDto.class, id));
+    return Optional.of(restTemplate.getForObject(beerServiceHost + beerPathV1 + id, BeerDto.class));
   }
 
   @Override
   public Optional<BeerDto> getBeerByUpc(String upc) {
-    return Optional.of(restTemplate.getForObject(beerServiceHost + beerUpcPathV1, BeerDto.class, upc));
+    log.info("Getting beer with UPC {}", upc);
+    return Optional.of(restTemplate.getForObject(beerServiceHost + beerUpcPathV1 + upc, BeerDto.class));
   }
 
 }
