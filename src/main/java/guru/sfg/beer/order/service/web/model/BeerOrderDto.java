@@ -26,6 +26,8 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import guru.sfg.beer.order.service.domain.OrderStatusEnum;
+
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
