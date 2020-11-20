@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.statemachine.config.EnableStateMachineFactory;
 import org.springframework.statemachine.config.StateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
+import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
 
 import guru.sfg.beer.order.service.domain.BeerOrderEvent;
 import guru.sfg.beer.order.service.domain.OrderStatusEnum;
@@ -24,6 +25,15 @@ public class BeerOrderStateMachineConfig extends StateMachineConfigurerAdapter<O
       .end(OrderStatusEnum.DELIVER_EXCEPTION)
       .end(OrderStatusEnum.VALIDATION_EXCEPTION)
       .end(OrderStatusEnum.ALLOCATION_EXCEPTION);
+  }
+
+  @Override
+  public void configure(StateMachineTransitionConfigurer<OrderStatusEnum, BeerOrderEvent> transitions) throws Exception {
+    transitions.withExternal().source(OrderStatusEnum.NEW).target(OrderStatusEnum.NEW).event(BeerOrderEvent.VALIDATE_ORDER)
+    .and()
+    .withExternal().source(OrderStatusEnum.NEW).target(OrderStatusEnum.VALIDATED).event(BeerOrderEvent.VALIDATION_PASSED)
+    .and()
+    .withExternal().source(OrderStatusEnum.NEW).target(OrderStatusEnum.VALIDATION_EXCEPTION).event(BeerOrderEvent.VALIDATION_FAILED);
   }
 
 }

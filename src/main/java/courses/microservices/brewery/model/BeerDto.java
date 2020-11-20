@@ -1,4 +1,4 @@
-package guru.sfg.beer.order.service.web.model;
+package courses.microservices.brewery.model;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;

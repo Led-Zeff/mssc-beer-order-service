@@ -8,7 +8,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import guru.sfg.beer.order.service.web.model.BeerDto;
+import courses.microservices.brewery.model.BeerDto;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
