@@ -27,6 +27,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Builder.Default;
 
 @Data
 @Builder
@@ -34,20 +35,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BeerOrderLineDto {
 
-    private UUID id = null;
+    private UUID id;
 
-    private Integer version = null;
-
-    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssZ", shape=JsonFormat.Shape.STRING)
-    private OffsetDateTime createdDate = null;
+    private Integer version;
 
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssZ", shape=JsonFormat.Shape.STRING)
-    private OffsetDateTime lastModifiedDate = null;
+    private OffsetDateTime createdDate;
+
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssZ", shape=JsonFormat.Shape.STRING)
+    private OffsetDateTime lastModifiedDate;
 
     private String upc;
     private String beerName;
     private BeerStyle beerStyle;
     private UUID beerId;
     private BigDecimal price;
+    @Default
     private Integer orderQuantity = 0;
 }

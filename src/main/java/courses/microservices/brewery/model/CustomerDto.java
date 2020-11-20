@@ -33,15 +33,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CustomerDto {
 
-    private UUID id = null;
+    private UUID id;
 
-    private Integer version = null;
-
-    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssZ", shape=JsonFormat.Shape.STRING)
-    private OffsetDateTime createdDate = null;
+    private Integer version;
 
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssZ", shape=JsonFormat.Shape.STRING)
-    private OffsetDateTime lastModifiedDate = null;
+    private OffsetDateTime createdDate;
+
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssZ", shape=JsonFormat.Shape.STRING)
+    private OffsetDateTime lastModifiedDate;
     
     private String name;
 
