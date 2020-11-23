@@ -1,4 +1,4 @@
-package guru.sfg.beer.order.service.config.statemachine;
+package guru.sfg.beer.order.service.config.statemachine.action;
 
 import java.util.UUID;
 

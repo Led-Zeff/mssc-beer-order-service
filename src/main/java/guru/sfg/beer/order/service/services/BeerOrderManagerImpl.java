@@ -1,5 +1,7 @@
 package guru.sfg.beer.order.service.services;
 
+import java.util.UUID;
+
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
@@ -33,6 +35,18 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
     BeerOrder saved = beerOrderRepository.save(beerOrder);
     sendBeerOrderEvent(saved, BeerOrderEvent.VALIDATE_ORDER);
     return saved;
+  }
+
+  @Override
+  public void inventoryValidateSuccess(UUID orderId) {
+    BeerOrder order = beerOrderRepository.getOne(orderId);
+    sendBeerOrderEvent(order, BeerOrderEvent.VALIDATION_PASSED);
+  }
+  
+  @Override
+  public void inventoryValidateError(UUID orderId) {
+    BeerOrder order = beerOrderRepository.getOne(orderId);
+    sendBeerOrderEvent(order, BeerOrderEvent.VALIDATION_FAILED);
   }
 
   private void sendBeerOrderEvent(BeerOrder beerOrder, BeerOrderEvent event) {
