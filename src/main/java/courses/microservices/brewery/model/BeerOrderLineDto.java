@@ -52,4 +52,6 @@ public class BeerOrderLineDto {
     private BigDecimal price;
     @Default
     private Integer orderQuantity = 0;
+    @Default
+    private Integer quantityAllocated = 0;
 }
