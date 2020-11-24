@@ -41,6 +41,9 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
   public void inventoryValidateSuccess(UUID orderId) {
     BeerOrder order = beerOrderRepository.getOne(orderId);
     sendBeerOrderEvent(order, BeerOrderEvent.VALIDATION_PASSED);
+    
+    BeerOrder validatedOrder = beerOrderRepository.getOne(orderId);
+    sendBeerOrderEvent(validatedOrder, BeerOrderEvent.ALLOCATE_ORDER);
   }
   
   @Override
