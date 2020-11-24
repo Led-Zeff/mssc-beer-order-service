@@ -10,6 +10,7 @@ import org.springframework.statemachine.support.DefaultStateMachineContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import courses.microservices.brewery.model.BeerOrderDto;
 import guru.sfg.beer.order.service.domain.BeerOrder;
 import guru.sfg.beer.order.service.domain.BeerOrderEvent;
 import guru.sfg.beer.order.service.domain.OrderStatusEnum;
@@ -50,6 +51,40 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
   public void inventoryValidateError(UUID orderId) {
     BeerOrder order = beerOrderRepository.getOne(orderId);
     sendBeerOrderEvent(order, BeerOrderEvent.VALIDATION_FAILED);
+  }
+
+  @Override
+  public void beerOrderAllocationPassed(BeerOrderDto beerOrderDto) {
+    BeerOrder beerOrder = beerOrderRepository.getOne(beerOrderDto.getId());
+    sendBeerOrderEvent(beerOrder, BeerOrderEvent.ALLOCATION_SUCCESS);
+    updateAllocationQty(beerOrderDto, beerOrder);
+  }
+  
+  @Override
+  public void beerOrderAllocationPendingInventory(BeerOrderDto beerOrderDto) {
+    BeerOrder beerOrder = beerOrderRepository.getOne(beerOrderDto.getId());
+    sendBeerOrderEvent(beerOrder, BeerOrderEvent.ALLOCATION_NO_INVENTORY);
+    updateAllocationQty(beerOrderDto, beerOrder);
+  }
+  
+  @Override
+  public void beerOrderAllocationFailed(BeerOrderDto beerOrderDto) {
+    BeerOrder beerOrder = beerOrderRepository.getOne(beerOrderDto.getId());
+    sendBeerOrderEvent(beerOrder, BeerOrderEvent.ALLOCATION_FAILED);
+  }
+  
+  private void updateAllocationQty(BeerOrderDto beerOrderDto, BeerOrder beerOrder) {
+    BeerOrder allocatedOrder = beerOrderRepository.getOne(beerOrderDto.getId());
+
+    allocatedOrder.getBeerOrderLines().forEach(orderLine -> {
+      beerOrderDto.getBeerOrderLines().forEach(orderLineDto -> {
+        if (orderLineDto.getId().equals(orderLine.getId())) {
+          orderLine.setQuantityAllocated(orderLineDto.getQuantityAllocated());
+        }
+      });
+    });
+
+    beerOrderRepository.saveAndFlush(beerOrder);
   }
 
   private void sendBeerOrderEvent(BeerOrder beerOrder, BeerOrderEvent event) {
