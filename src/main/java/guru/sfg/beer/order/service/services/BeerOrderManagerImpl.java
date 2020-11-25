@@ -73,6 +73,12 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
     sendBeerOrderEvent(beerOrder, BeerOrderEvent.ALLOCATION_FAILED);
   }
   
+  @Override
+  public void beerOrderPickedUp(UUID orderId) {
+    BeerOrder beerOrder = beerOrderRepository.getOne(orderId);
+    sendBeerOrderEvent(beerOrder, BeerOrderEvent.BEER_ORDER_PICKED_UP);
+  }
+  
   private void updateAllocationQty(BeerOrderDto beerOrderDto) {
     BeerOrder allocatedOrder = beerOrderRepository.findById(beerOrderDto.getId()).orElseThrow();
 
